@@ -1,5 +1,9 @@
 package com.example.android.provectustask.Utils;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,17 +22,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class UtilsJson {
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
+    static String fileName = "";
     public static final String LOG_TAG = UtilsJson.class.getSimpleName();
 
     /**
      * Query the https://randomuser.me/ dataset and return an {@link com.example.android.provectustask.UserProfile} object.
      */
 
-    public static ArrayList<UserProfile> fetchUserProfileData(String requestUrl) {
+    public static ArrayList<UserProfile> fetchUserProfileData(String requestUrl) throws ExecutionException, InterruptedException {
+
         // Create URL object
+        Log.e("staty", "Fetchin begins!");
         URL url = createUrl(requestUrl);
 
         // Perform HTTP request to the URL and receive a JSON response back
@@ -50,6 +60,7 @@ public class UtilsJson {
 
     private static URL createUrl(String stringUrl) {
         URL url = null;
+        Log.e("staty", "Creating Url...");
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e) {
@@ -63,6 +74,7 @@ public class UtilsJson {
      */
 
     private static String makeHttpRequest(URL url) throws IOException {
+        Log.e("staty", "Makin http request...");
         String jsonResponse = "";
 
         // If the URL is null, then return early.
@@ -107,6 +119,7 @@ public class UtilsJson {
      */
 
     private static String readFromStream(InputStream inputStream) throws IOException {
+        Log.e("staty", "reading from stream...");
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
@@ -124,13 +137,15 @@ public class UtilsJson {
      * Return an {@link UserProfile} object by parsing out information
      */
 
-    private static ArrayList<UserProfile> extractFeatureFromJson(String UserProfileJSON) {
+    private static ArrayList<UserProfile> extractFeatureFromJson(String UserProfileJSON) throws ExecutionException, InterruptedException {
+
+        Log.e("staty", "Extracting from json...");
 
         ArrayList<UserProfile> UserProfileList = new ArrayList<>();
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(UserProfileJSON)) {
-            Log.v("json1","json string is empty!!!");
+            Log.e("json1", "json string is empty!!!");
             return null;
         }
 
@@ -143,7 +158,7 @@ public class UtilsJson {
 
             // If there are results in the profiles array
             if (usersProfileArray.length() > 0) {
-                for (int i = 0; i < usersProfileArray.length();i++){
+                for (int i = 0; i < usersProfileArray.length(); i++) {
 
                     // Extract out the profile's JSON
                     JSONObject usersProfile = usersProfileArray.getJSONObject(i);
@@ -154,9 +169,6 @@ public class UtilsJson {
                     String title = fullName.getString("title");
                     String firstName = fullName.getString("first");
                     String lastName = fullName.getString("last");
-
-//                    String name = String.format("%s. %s %s", title,
-//                            firstName, lastName);
 
                     //Gender
                     String sex = usersProfile.getString("gender");
@@ -176,26 +188,41 @@ public class UtilsJson {
                     String dob = usersProfile.getString("dob");
 
                     //Phones:
-
                     String phone = usersProfile.getString("phone");
                     String cellPhone = usersProfile.getString("cell");
 
-                    String name = String.format("%s. %s %s \n %s \n %s %s %s %s \n %s \n %s \n %s %s \n \n \n", title, firstName, lastName, sex,
+                    //Picture's url:
+                    JSONObject picture = usersProfile.getJSONObject("picture");
+
+                    String picUrlThumbnail = picture.getString("thumbnail");
+                    String picUrlMediumSize = picture.getString("medium");
+
+
+                    //Pictures local URL:
+
+                    //Constructing a full string for debuggin' purposes:
+//                    String logDebugString = String.format("%s. %s %s \n %s \n %s %s %s %s \n %s \n %s \n %s %s \n %s %s \n \n \n", title, firstName, lastName, sex,
+//                            street, city, state, postcode,
+//                            email, dob,
+//                            phone, cellPhone,
+//                            picUrlMediumSize, picUrlThumbnail);
+//
+//                    Log.e("staty", logDebugString);
+
+
+                    // Create a new {@link UserProfile} object
+
+                    UserProfileList.add(new UserProfile(title, firstName, lastName,
+                            sex,
                             street, city, state, postcode,
-                            email, dob,
-                            phone, cellPhone);
-
-                    Log.e("staty", name);
-
-//                    String numberOfPeople = usersProfile.getString("services");
-//                    int UserProfileCode = usersProfile.getInt("UserProfile");
-//                    Log.e("star", String.valueOf(UserProfileCode));
-
-                    // Create a new {@link Event} object
-
-                   // UserProfileList.add(new UserProfile(sex, numberOfPeople, UserProfileCode));
+                            dob,
+                            cellPhone, phone,
+                            email,
+                            picUrlThumbnail, picUrlMediumSize
+                            ));
                 }
             }
+            Log.e("staty wow", String.valueOf(UserProfileList.size()));
             return UserProfileList;
 
         } catch (JSONException e) {
@@ -203,6 +230,6 @@ public class UtilsJson {
             Log.e(LOG_TAG, "Problem parsing the UserProfile JSON results", e);
             return UserProfileList;
         }
-        //return null;
-    }}
+    }
+}
 

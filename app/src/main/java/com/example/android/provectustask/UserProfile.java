@@ -1,11 +1,11 @@
 package com.example.android.provectustask;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * Created by nexus on 28.06.2017.
  */
-public class UserProfile {
+public class UserProfile implements Serializable {
 
     // User's name components
     private String mTitle;
@@ -24,10 +24,10 @@ public class UserProfile {
 
     private String mState;
 
-    private int mPostalCode;
+    private String mPostalCode;
 
     //User's date of birth
-    private Date mDateOfBirth;
+    private String mDateOfBirth;
 
     //User's phone numbers
     private String mCellPhone;
@@ -37,11 +37,25 @@ public class UserProfile {
     //User's email
     private String mEmail;
 
-    //User's picture
-    private String mPictureUrl;
+    //User's picture's sizes
+    private String mPictureUrlThumb;
+
+    private String mPictureUrlMedium;
+
+    private String mFileName;
+
+    public String getmFileName() {
+        return mFileName;
+    }
 
     //Create a new profile object
-    public UserProfile(String mTitle, String mFirstName, String mLastName, String mGender, String mStreet, String mCity, String mState, int mPostalCode, Date mDateOfBirth, String mCellPhone, String mPhone, String mEmail, String mPictureUrl) {
+    public UserProfile(String mTitle, String mFirstName, String mLastName,
+                       String mGender,
+                       String mStreet, String mCity, String mState, String mPostalCode,
+                       String mDateOfBirth,
+                       String mCellPhone, String mPhone,
+                       String mEmail,
+                       String mPictureUrl, String mPictureUrlMedium) {
         this.mTitle = mTitle;
         this.mFirstName = mFirstName;
         this.mLastName = mLastName;
@@ -54,7 +68,9 @@ public class UserProfile {
         this.mCellPhone = mCellPhone;
         this.mPhone = mPhone;
         this.mEmail = mEmail;
-        this.mPictureUrl = mPictureUrl;
+        this.mPictureUrlThumb = mPictureUrl;
+        this.mPictureUrlMedium = mPictureUrlMedium;
+
     }
 
     public String getTitle() {
@@ -85,11 +101,11 @@ public class UserProfile {
         return mState;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return mPostalCode;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return mDateOfBirth;
     }
 
@@ -105,7 +121,11 @@ public class UserProfile {
         return mEmail;
     }
 
-    public String getPictureUrl() {
-        return mPictureUrl;
+    public String getPictureThumbUrl() {
+        return mPictureUrlThumb;
+    }
+
+    public String getmPictureUrlMedium() {
+        return mPictureUrlMedium;
     }
 }

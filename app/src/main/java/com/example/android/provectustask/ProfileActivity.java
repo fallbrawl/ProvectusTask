@@ -14,13 +14,16 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent userInfo = getIntent();
 
+        // Recieving a serialized info bundle to fill in profile page
+        Bundle bundle = userInfo.getExtras();
+        UserProfile profile = (UserProfile) bundle.getSerializable("profile");
 
-        // Recieving an info to fill in profile page from intent
-
-        String fullName = userInfo.getStringExtra("name");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Fullname
+        String fullName = String.format("%s. %s %s", profile != null ? profile.getTitle() : " ", profile.getFirstName(), profile.getLastName() );
 
         TextView name = (TextView) this.findViewById(R.id.userFullName);
         name.setText(fullName);

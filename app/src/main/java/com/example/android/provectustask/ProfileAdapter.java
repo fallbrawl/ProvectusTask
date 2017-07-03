@@ -1,6 +1,11 @@
 package com.example.android.provectustask;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +13,41 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by nexus on 28.06.2017.
  */
 public class ProfileAdapter extends ArrayAdapter<UserProfile> {
 
-
     public ProfileAdapter(Activity context, List<UserProfile> profiles) {
-        //// Initializing the ArrayAdapter's internal storage for the context and the list.
+        // Initializing the ArrayAdapter's internal storage for the context and the list.
         super(context, 0, profiles);
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+
+        }
     }
 
     @Override
@@ -51,16 +80,24 @@ public class ProfileAdapter extends ArrayAdapter<UserProfile> {
 
         // Get the user's name from the current UserProfile object and
         // set this text on the name TextView
-        holder.dateTextView.setText(String.format("%s %s",currentProfile.getFirstName(),currentProfile.getLastName()));
+
+        holder.dateTextView.setText(String.format("%s %s", currentProfile.getFirstName(),currentProfile.getLastName()));
 
         // Get the version number from the current UserProfile object and
         // set this text on the number TextView
         holder.resourceTextView.setText(currentProfile.getEmail());
 
-        // Get the image resource ID from the current UserProfile object and
+        // Get the image Bitmap from the current UserProfile object
+        // using the AsynkTask and
         // set the image
-
-        holder.thumbnailView.setImageResource(R.drawable.avatar);
+        try {
+            Bitmap thumb = new DownloadImageTask().execute(currentProfile.getPictureThumbUrl()).get();
+            holder.thumbnailView.setImageBitmap(thumb);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         return listUsersView;
 
