@@ -28,7 +28,7 @@ public class UtilsJson {
     /**
      * Tag for the log messages
      */
-    static String fileName = "";
+
     public static final String LOG_TAG = UtilsJson.class.getSimpleName();
 
     /**
@@ -38,7 +38,7 @@ public class UtilsJson {
     public static ArrayList<UserProfile> fetchUserProfileData(String requestUrl) throws ExecutionException, InterruptedException {
 
         // Create URL object
-        Log.e("staty", "Fetchin begins!");
+        Log.e(LOG_TAG, "Fetchin begins!");
         URL url = createUrl(requestUrl);
 
         // Perform HTTP request to the URL and receive a JSON response back
@@ -60,7 +60,7 @@ public class UtilsJson {
 
     private static URL createUrl(String stringUrl) {
         URL url = null;
-        Log.e("staty", "Creating Url...");
+        Log.e(LOG_TAG, "Creating Url...");
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e) {
@@ -74,7 +74,7 @@ public class UtilsJson {
      */
 
     private static String makeHttpRequest(URL url) throws IOException {
-        Log.e("staty", "Makin http request...");
+        Log.e(LOG_TAG, "Makin http request...");
         String jsonResponse = "";
 
         // If the URL is null, then return early.
@@ -101,7 +101,7 @@ public class UtilsJson {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the profiles JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -119,7 +119,7 @@ public class UtilsJson {
      */
 
     private static String readFromStream(InputStream inputStream) throws IOException {
-        Log.e("staty", "reading from stream...");
+        Log.e(LOG_TAG, "reading from stream...");
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
@@ -139,13 +139,11 @@ public class UtilsJson {
 
     private static ArrayList<UserProfile> extractFeatureFromJson(String UserProfileJSON) throws ExecutionException, InterruptedException {
 
-        Log.e("staty", "Extracting from json...");
-
         ArrayList<UserProfile> UserProfileList = new ArrayList<>();
 
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(UserProfileJSON)) {
-            Log.e("json1", "json string is empty!!!");
+            Log.e(LOG_TAG, "json string is empty!!!");
             return null;
         }
 
@@ -153,8 +151,6 @@ public class UtilsJson {
             JSONObject jsonObject = new JSONObject(UserProfileJSON);
 
             JSONArray usersProfileArray = jsonObject.getJSONArray("results");
-            Log.v("staty", String.valueOf(usersProfileArray.length()));
-
 
             // If there are results in the profiles array
             if (usersProfileArray.length() > 0) {
@@ -198,8 +194,6 @@ public class UtilsJson {
                     String picUrlMediumSize = picture.getString("medium");
 
 
-                    //Pictures local URL:
-
                     //Constructing a full string for debuggin' purposes:
 //                    String logDebugString = String.format("%s. %s %s \n %s \n %s %s %s %s \n %s \n %s \n %s %s \n %s %s \n \n \n", title, firstName, lastName, sex,
 //                            street, city, state, postcode,
@@ -207,11 +201,9 @@ public class UtilsJson {
 //                            phone, cellPhone,
 //                            picUrlMediumSize, picUrlThumbnail);
 //
-//                    Log.e("staty", logDebugString);
-
+//                    Log.e(LOG_TAG, logDebugString);
 
                     // Create a new {@link UserProfile} object
-
                     UserProfileList.add(new UserProfile(title, firstName, lastName,
                             sex,
                             street, city, state, postcode,
@@ -222,7 +214,7 @@ public class UtilsJson {
                             ));
                 }
             }
-            Log.e("staty wow", String.valueOf(UserProfileList.size()));
+
             return UserProfileList;
 
         } catch (JSONException e) {

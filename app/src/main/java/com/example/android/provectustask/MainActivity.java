@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.provectustask.Utils.NetworkUtils;
@@ -27,54 +28,35 @@ public class MainActivity extends AppCompatActivity {
 
     //Request API URL
     final static String url = "https://randomuser.me/api/?results=10&noinfo";
-    Context context = getBaseContext();
     private ArrayList<UserProfile> userProfiles = new ArrayList<>();
-
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-
-        }
-    }
 
     //Task for retrieving array of {@link Profile}s
     private class ParseJsonTask extends AsyncTask<String, Void, ArrayList<UserProfile>> {
+        ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar1);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            spinner.setIndeterminate(true);
+            spinner.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected ArrayList<UserProfile> doInBackground(String... params) {
             ArrayList <UserProfile> wow = new ArrayList<>();
-            UtilsJson utilsJson = new UtilsJson();
+
             try {
-                wow =  utilsJson.fetchUserProfileData(params[0]);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+                wow =  UtilsJson.fetchUserProfileData(params[0]);
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-
-            Log.e("staty wow", String.valueOf(wow.size()));
 
             return wow;
         }
 
         @Override
         protected void onPostExecute(ArrayList<UserProfile> contains) {
-
+            spinner.setVisibility(View.GONE);
         }}
 
     @Override
@@ -82,8 +64,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         if (NetworkUtils.isNetworkAvailable(this)) {
             //Fetchin data
+
             try {
                 userProfiles = new ParseJsonTask().execute(url).get();
             } catch (InterruptedException e) {
@@ -92,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Log.e("staty asyn", String.valueOf(userProfiles.size()));
             // Create an {@link ProfileAdapter}, whose data source is a list of
             // {@link Profile}s. The adapter knows how to create list item views for each item
             // in the list.
@@ -101,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             // Get a reference to the ListView, and attach the adapter to the listView.
             ListView listView = (ListView) this.findViewById(R.id.list_for_statuses);
             listView.setAdapter(statusesAdapter);
+
 
 
             // Set a click listener to get to the correct profile info from the list
