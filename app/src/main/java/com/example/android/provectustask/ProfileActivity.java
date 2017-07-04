@@ -102,10 +102,29 @@ public class ProfileActivity extends AppCompatActivity {
                 Bitmap avatarPic = new DownloadImageTask().execute(profile.getPictureUrlMedium()).get();
                 avatar.setImageBitmap(avatarPic);
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ImageView randomBackground = (ImageView) this.findViewById(R.id.randomBackgroundUserPic);
+
+        //Gettin random pic for background
+        Bitmap backgroundPic = null;
+        try {
+            backgroundPic = new DownloadImageTask().execute("https://unsplash.it/450/350/?random").get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        randomBackground.setImageBitmap(backgroundPic);
     }
 }
