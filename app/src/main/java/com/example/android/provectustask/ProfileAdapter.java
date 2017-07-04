@@ -90,9 +90,15 @@ public class ProfileAdapter extends ArrayAdapter<UserProfile> {
         // Get the image Bitmap from the current UserProfile object
         // using the AsynkTask and
         // set the image
+
+        //TODO: extract image downloading into separate class to avoid code duplication
         try {
-            Bitmap thumb = new DownloadImageTask().execute(currentProfile.getPictureThumbUrl()).get();
-            holder.thumbnailView.setImageBitmap(thumb);
+            if (holder.thumbnailView.getDrawable() == null){
+                Bitmap thumb = new DownloadImageTask().execute(currentProfile.getPictureThumbUrl()).get();
+                holder.thumbnailView.setImageBitmap(thumb);
+            }
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

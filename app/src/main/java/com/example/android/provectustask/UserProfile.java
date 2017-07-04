@@ -125,7 +125,7 @@ public class UserProfile implements Serializable {
         return mPictureUrlThumb;
     }
 
-    public String getmPictureUrlMedium() {
+    public String getPictureUrlMedium() {
         return mPictureUrlMedium;
     }
 }

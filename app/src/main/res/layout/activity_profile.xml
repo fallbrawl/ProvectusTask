@@ -1,156 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_margin"
-    android:orientation="vertical">
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipChildren="false"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_margin"
         android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/randomBackgroundUserPic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/random_pic" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="@dimen/avatar_size"
-        android:layout_height="@dimen/avatar_size"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/avatar_placement"
-        android:src="@drawable/avatar" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/userFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="Roger Waters"
-            android:textAppearance="@style/ProfileName" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipChildren="false"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/randomBackgroundUserPic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/random_pic" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/avatar_placement" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/userBirthday"
+                android:id="@+id/userFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:text="1983-07-14 07:29:45"
-                android:textAppearance="@style/ProfileRegularData" />
-        </LinearLayout>
+                android:textAppearance="@style/ProfileName"
+                tools:text="Roger Waters" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_width="@dimen/profile_pics_size"
-                android:layout_height="@dimen/profile_pics_size"
-                android:src="@drawable/email_profile_pic"
-                android:layout_marginEnd="@dimen/profile_icon_margin"
-                />
-            <TextView
-                android:id="@+id/userEmail"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="herdemisemyrise.bt@gmail.com"
-                android:textAppearance="@style/ProfileRegularData" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="@dimen/profile_pics_size"
-                android:layout_height="@dimen/profile_pics_size"
-                android:src="@drawable/phone_profile_pic"
-                android:layout_marginEnd="@dimen/profile_icon_margin"/>
-            <TextView
-                android:id="@+id/userPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Roger Waters"
-                android:textAppearance="@style/ProfileRegularData" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/userBirthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="@style/ProfileRegularData"
+                    tools:text="1983-07-14 07:29:45" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="@dimen/profile_pics_size"
-                android:layout_height="@dimen/profile_pics_size"
-                android:src="@drawable/cell_phone_profile_pic"
-                android:layout_marginEnd="@dimen/profile_icon_margin"/>
-            <TextView
-                android:id="@+id/userCellPhone"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:text="Roger Waters"
-                android:textAppearance="@style/ProfileRegularData" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="@dimen/profile_pics_size"
-                android:layout_height="@dimen/profile_pics_size"
-                android:src="@drawable/address_profile_pic"
-                android:layout_marginEnd="@dimen/profile_icon_margin"
-               />
+                <ImageView
+                    android:layout_width="@dimen/profile_pics_size"
+                    android:layout_height="@dimen/profile_pics_size"
+                    android:layout_marginEnd="@dimen/profile_icon_margin"
+                    android:src="@drawable/email_profile_pic" />
+
+                <TextView
+                    android:id="@+id/userEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/ProfileRegularData"
+                    tools:text="herdemisemyrise.bt@gmail.com" />
+            </LinearLayout>
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/profile_pics_size"
+                    android:layout_height="@dimen/profile_pics_size"
+                    android:layout_marginEnd="@dimen/profile_icon_margin"
+                    android:src="@drawable/phone_profile_pic" />
+
                 <TextView
-                    android:id="@+id/userStreet"
+                    android:id="@+id/userPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="1861 jan pieterszoon coenstraat"
-                    android:textAppearance="@style/ProfileRegularData" />
+                    android:textAppearance="@style/ProfileRegularData"
+                    tools:text="Roger Waters" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/profile_pics_size"
+                    android:layout_height="@dimen/profile_pics_size"
+                    android:layout_marginEnd="@dimen/profile_icon_margin"
+                    android:src="@drawable/cell_phone_profile_pic" />
+
                 <TextView
-                    android:id="@+id/userMisc"
+                    android:id="@+id/userCellPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="maasdriel, zeeland, 69217"
-                    android:textAppearance="@style/ProfileRegularData" />
+                    android:gravity="center"
+                    android:textAppearance="@style/ProfileRegularData"
+                    tools:text="Roger Waters" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/profile_pics_size"
+                    android:layout_height="@dimen/profile_pics_size"
+                    android:layout_marginEnd="@dimen/profile_icon_margin"
+                    android:src="@drawable/address_profile_pic" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/userStreet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/ProfileRegularData"
+                        tools:text="1861 jan pieterszoon coenstraat" />
+
+                    <TextView
+                        android:id="@+id/userMisc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/ProfileRegularData"
+                        tools:text="maasdriel, zeeland, 69217" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
 
-
-
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
