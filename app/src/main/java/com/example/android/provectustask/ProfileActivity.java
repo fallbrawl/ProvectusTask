@@ -7,7 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -19,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class ProfileActivity extends AppCompatActivity {
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    private class DownloadAvatarImageTask extends AsyncTask<String, Void, Bitmap> {
 
         protected Bitmap doInBackground(String... urls) {
             String urldisplay = urls[0];
@@ -36,7 +39,30 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(Bitmap result) {
+            ImageView avatar = (ImageView) findViewById(R.id.avatar);
+            avatar.setImageBitmap(result);
+        }
+    }
 
+    private class DownloadBackgroundImageTask extends AsyncTask<String, Void, Bitmap> {
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            ImageView randomBackground = (ImageView) findViewById(R.id.randomBackgroundUserPic);
+            randomBackground.setImageBitmap(result);
         }
     }
 
@@ -45,6 +71,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ProgressBar spinner = (ProgressBar) this.findViewById(R.id.profileProgressBar);
+        Bitmap backgroundPic = null;
+        Bitmap avatarPic = null;
+
+        spinner.setVisibility(View.VISIBLE);
 
         Intent userInfo = getIntent();
 
@@ -53,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
         UserProfile profile = (UserProfile) bundle.getSerializable("profile");
 
         //Fullname
-        String fullName = String.format("%s. %s %s", profile != null ? profile.getTitle() : " ", profile.getFirstName(), profile.getLastName() );
+        String fullName = String.format("%s. %s %s", profile != null ? profile.getTitle() : " ", profile.getFirstName(), profile.getLastName());
 
         TextView nameView = (TextView) this.findViewById(R.id.userFullName);
         nameView.setText(fullName);
@@ -91,40 +122,21 @@ public class ProfileActivity extends AppCompatActivity {
         miscAddressView.setText(misc);
         streetView.setText(street);
 
-        //Avatar
-
-        ImageView avatar = (ImageView) this.findViewById(R.id.avatar);
-
         //TODO: extract image downloading into separate class to avoid code duplication
+        //Gettin random pic for background and avatar
 
-        try {
-            if (avatar.getDrawable() == null){
-                Bitmap avatarPic = new DownloadImageTask().execute(profile.getPictureUrlMedium()).get();
-                avatar.setImageBitmap(avatarPic);
-            }
+        new DownloadAvatarImageTask().execute(profile.getPictureUrlMedium());
+        new DownloadBackgroundImageTask().execute("https://unsplash.it/450/350/?random");
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        spinner.setVisibility(View.GONE);
+        LinearLayout profileLayout = (LinearLayout) this.findViewById(R.id.profileLayout);
+        profileLayout.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        ImageView randomBackground = (ImageView) this.findViewById(R.id.randomBackgroundUserPic);
-
-        //Gettin random pic for background
-        Bitmap backgroundPic = null;
-        try {
-            backgroundPic = new DownloadImageTask().execute("https://unsplash.it/450/350/?random").get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        randomBackground.setImageBitmap(backgroundPic);
     }
 }

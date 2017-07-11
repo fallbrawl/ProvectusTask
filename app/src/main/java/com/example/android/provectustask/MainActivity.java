@@ -1,27 +1,18 @@
 package com.example.android.provectustask;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.example.android.provectustask.Utils.NetworkUtils;
 import com.example.android.provectustask.Utils.UtilsJson;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,14 +20,15 @@ public class MainActivity extends AppCompatActivity {
     //Request API URL
     final static String url = "https://randomuser.me/api/?results=10&noinfo";
     private ArrayList<UserProfile> userProfiles = new ArrayList<>();
+    ProgressBar spinner;
 
     //Task for retrieving array of {@link Profile}s
     private class ParseJsonTask extends AsyncTask<String, Void, ArrayList<UserProfile>> {
-        ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar1);
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            spinner =  (ProgressBar) findViewById(R.id.progressBar1);
             spinner.setIndeterminate(true);
             spinner.setVisibility(View.VISIBLE);
         }
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             ProfileAdapter statusesAdapter = new ProfileAdapter(this, userProfiles);
 
             // Get a reference to the ListView, and attach the adapter to the listView.
-            ListView listView = (ListView) this.findViewById(R.id.list_for_statuses);
+            ListView listView = (ListView) this.findViewById(R.id.list_for_profiles);
             listView.setAdapter(statusesAdapter);
 
 
@@ -100,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("profile", profile);
                     profileCardIntent.putExtras(bundle);
-
                     startActivity(profileCardIntent);
                 }
             });
