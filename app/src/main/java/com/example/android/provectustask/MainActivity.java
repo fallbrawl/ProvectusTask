@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     //Request API URL
     final static String url = "https://randomuser.me/api/?results=10&noinfo";
     private ArrayList<UserProfile> userProfiles = new ArrayList<>();
-    ProgressBar spinner;
+
 
     //Task for retrieving array of {@link Profile}s
     private class ParseJsonTask extends AsyncTask<String, Void, ArrayList<UserProfile>> {
@@ -28,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            spinner =  (ProgressBar) findViewById(R.id.progressBar1);
-            spinner.setIndeterminate(true);
-            spinner.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -48,14 +47,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<UserProfile> contains) {
-            spinner.setVisibility(View.GONE);
+
         }}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         if (NetworkUtils.isNetworkAvailable(this)) {
             //Fetchin data

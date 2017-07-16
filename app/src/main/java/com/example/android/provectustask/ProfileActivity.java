@@ -126,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity {
         //Gettin random pic for background and avatar
 
         new DownloadAvatarImageTask().execute(profile.getPictureUrlMedium());
-        new DownloadBackgroundImageTask().execute("https://unsplash.it/450/350/?random");
+        new DownloadBackgroundImageTask().execute("https://unsplash.it/450/450/?random");
 
         spinner.setVisibility(View.GONE);
         LinearLayout profileLayout = (LinearLayout) this.findViewById(R.id.profileLayout);
